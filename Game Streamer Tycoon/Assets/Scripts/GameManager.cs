@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public int Viewers { get; private set; }
     bool bGamePaused = false, bGameStarted = false;
     public bool IsLive { get; private set; }
+    public string[] Sponsors = new string[ 0 ];
 
     void Start( )
     {
@@ -102,7 +103,6 @@ public class GameManager : MonoBehaviour
                 //Can't Continue
                 return;
             }
-
         }
     }
 
@@ -224,6 +224,13 @@ public class GameManager : MonoBehaviour
     public void ToggleLive( )
     {
         IsLive = !IsLive;
+
+        if ( IsLive )
+        {
+            //show game list
+            GameObject GameListWin = (GameObject)GameObject.Instantiate( Resources.Load( "GameListWindow" ), Vector3.zero, Quaternion.identity );
+            GameListWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
+        }
     }
 
     public void SetPlayerName( string newName )
