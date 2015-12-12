@@ -1,17 +1,16 @@
 fileFormatVersion: 2
-guid: 642b73d34bbdf7f45b73869d6ff58222
-timeCreated: 1449904382
+guid: 6ae3c24a87ad28c4dbb32256769bb5d2
+timeCreated: 1449911315
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Small_Table
     400000: //RootNode
-    400002: Small_Table
-    2300000: Small_Table
-    3300000: Small_Table
-    4300000: Small_Table
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Keyboard
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

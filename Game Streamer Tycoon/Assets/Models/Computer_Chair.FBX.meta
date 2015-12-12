@@ -1,17 +1,16 @@
 fileFormatVersion: 2
-guid: f48a49151900d1d44a4d65298f3b01a3
-timeCreated: 1449902538
+guid: af1801d499376f74fa74ec71284f1436
+timeCreated: 1449911159
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Mouse
-    100002: //RootNode
-    400000: Mouse
-    400002: //RootNode
-    2300000: Mouse
-    3300000: Mouse
-    4300000: Mouse
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Computer Chair
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

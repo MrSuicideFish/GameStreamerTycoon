@@ -1,17 +1,16 @@
 fileFormatVersion: 2
-guid: d11d02945f51c4a4897d479e74b9c90f
-timeCreated: 1449902538
+guid: bd23a55674996cd479b560d62726a773
+timeCreated: 1449911324
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Monitor
-    100002: //RootNode
-    400000: Monitor
-    400002: //RootNode
-    2300000: Monitor
-    3300000: Monitor
-    4300000: Monitor
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Small Table
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

@@ -1,17 +1,16 @@
 fileFormatVersion: 2
-guid: bbc7c3bd167b37d44a3f85d8fafefe62
-timeCreated: 1449902538
+guid: 338effbf1087ca14aa1f6ccba8f214ca
+timeCreated: 1449911055
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Keyboard
-    100002: //RootNode
-    400000: Keyboard
-    400002: //RootNode
-    2300000: Keyboard
-    3300000: Keyboard
-    4300000: Keyboard
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Bed
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
