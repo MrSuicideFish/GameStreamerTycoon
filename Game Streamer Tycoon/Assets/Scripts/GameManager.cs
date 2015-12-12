@@ -46,9 +46,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player Stats
     /// </summary>
-    string StreamerName;
-    int Followers, Viewers;
+    public string StreamerName { get; private set; }
+    public int Followers { get; private set; }
+    public int Viewers { get; private set; }
     bool bGamePaused = false, bGameStarted = false;
+    public bool IsLive { get; private set; }
 
     void Start( )
     {
@@ -81,12 +83,6 @@ public class GameManager : MonoBehaviour
 
         if ( CurrentGameState == GameState.GAME )
         {
-            if ( string.IsNullOrEmpty( StreamerName ) )
-            {
-                //Can't Continue
-                return;
-            }
-
             //Handle message screens
             //Is there a message currently displaying?
             if ( CurrentMessageWindow == null )
@@ -100,6 +96,13 @@ public class GameManager : MonoBehaviour
             }
             else
                 bSwitchingGameMessages = false;
+
+            if ( string.IsNullOrEmpty( StreamerName ) )
+            {
+                //Can't Continue
+                return;
+            }
+
         }
     }
 
@@ -122,8 +125,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartGameCallback( )
     {
-        //Test message
-        //ThrowGameMessage( "Testing", "This is test dialog." );
+        ThrowGameMessage( "Welcome", "So you're new to the streaming world, huh? \n Well, you're going to have to learn the ropes as you go along. But first thing's first, what's your <color=#00ffffff><b><i>StreamerTag</i></b></color>?" );
+        
+        while ( CurrentMessageWindow != null ) yield return null;
 
         //Ask for player name
         GameObject playerNameWin = null;
@@ -142,9 +146,12 @@ public class GameManager : MonoBehaviour
         //Remove player window
         GameObject.Destroy( playerNameWin );
 
-        //Show welcome screen
+        yield return new WaitForSeconds( 2 );
+        AddFollowers( 2 );
 
-        //Add two followers
+        //Show welcome screen
+        ThrowGameMessage( "New Followers", "Congratulations! You have your first followers! They're your parents but a follow is a follow in the world of streaming.\n As you gain followers, you will begin to notice a rise in opportunities coming your way." );
+        ThrowGameMessage( "Going Live", "As a streamer, obviously you are required to <i>actually</i> stream. \n To do this, start/stop your stream by pressing the 'Go Live' button at the bottom of the screen." );
 
         yield return null;
     }
@@ -191,6 +198,34 @@ public class GameManager : MonoBehaviour
         CurrentGameState = bGamePaused ? GameState.PAUSE : GameState.GAME;
     }
 
+    public delegate void FollowersChanged( int num );
+    public event FollowersChanged OnFollowersGained;
+    public event FollowersChanged OnFollowersLost;
+    public void AddFollowers( int numOfNewFollowers )
+    {
+        Followers += numOfNewFollowers;
+
+        if ( OnFollowersGained != null )
+        {
+            OnFollowersGained.Invoke( numOfNewFollowers );
+        }
+    }
+
+    public void RemoveFollowers( int numOfLostFollowers )
+    {
+        Followers -= numOfLostFollowers;
+
+        if ( OnFollowersLost != null )
+        {
+            OnFollowersLost.Invoke( numOfLostFollowers );
+        }
+    }
+
+    public void ToggleLive( )
+    {
+        IsLive = !IsLive;
+    }
+
     public void SetPlayerName( string newName )
     {
         if ( !string.IsNullOrEmpty( newName ) )
@@ -215,13 +250,30 @@ public class GameManager : MonoBehaviour
         {
             //Create new window
             CurrentMessageWindow = ( GameObject )GameObject.Instantiate( ( GameObject )Resources.Load( "DialogWindow" ), Vector3.zero, Quaternion.identity );
+            CurrentMessageWindow.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
 
             Text winTitle = CurrentMessageWindow.transform.GetChild( 0 ).GetComponent<Text>( );
             Text winDialog = CurrentMessageWindow.transform.GetChild( 1 ).GetComponent<Text>( );
 
             winTitle.text = GameMessageList[ 0 ].Key;
             winDialog.text = GameMessageList[ 0 ].Value;
-        }
 
+            if ( GameMessageList.Count > 1 )
+            {
+                //Remove this message from the list
+                GameMessageList.RemoveAt( 0 );
+
+                //Shift list down
+                for ( int i = 1; i < GameMessageList.Count - 1; i++ )
+                {
+                    GameMessageList[ i - 1 ] = GameMessageList[ i ];
+                }
+            }
+            else
+            {
+                //Remove this message from the list
+                GameMessageList.RemoveAt( 0 );
+            }
+        }
     }
 }
