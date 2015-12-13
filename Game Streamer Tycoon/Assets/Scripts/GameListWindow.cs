@@ -57,7 +57,7 @@ public class GameListWindow : ModalWindow
 
     public void Select( )
     {
-        GameManager.Instance.CurrentGame = SelectedPanel.GetComponent<GamePanel>( ).ParentGame;
+        GameManager.Instance.BeginStream(SelectedPanel.GetComponent<GamePanel>( ).ParentGame);
         GameObject.Destroy( gameObject );
     }
 }

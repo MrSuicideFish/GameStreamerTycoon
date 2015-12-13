@@ -7,7 +7,7 @@ public delegate void GameSelect(int idx);
 public class GamePanel : MonoBehaviour
 {
     public Game ParentGame;
-    public Text Title, Developer, Sponsored;
+    public Text Title, Developer, Sponsored, Price;
     public RectTransform CriticVal, CommunityVal, StreamerVal;
     public Outline PanelOutline;
 
@@ -20,13 +20,9 @@ public class GamePanel : MonoBehaviour
     void FixedUpdate( )
     {
         if ( IsSelected )
-        {
             PanelOutline.effectColor = new Color( 0.47f, 0.97f, 1f );
-        }
         else
-        {
             PanelOutline.effectColor = new Color( 0.57f, 0.80f, 1f );
-        }
     }
 
     public void SetGame( Game newGame )

@@ -37,7 +37,50 @@ public struct Game
         }
     }
 
+    public bool Owned
+    {
+        get
+        {
+            return GameManager.Instance.PlayerOwnedGames.Contains( this );
+        }
+    }
+
     public ESRBRating EsrbRating;
+
+    public static Game CreateGame( )
+    {
+        Game newGame = new Game( );
+        newGame.Title = "SomeTitle";
+        newGame.Developer = "SomeDeveloper";
+        newGame.Description = "Some Description Here";
+
+        //Give game random rating
+        int ratingIdx = Random.Range( 1, 4 );
+        newGame.EsrbRating = ( ESRBRating )ratingIdx;
+
+        //Give game random scores
+        newGame.CommunityRating = Random.Range( 1, 100 );
+        newGame.CriticRating = Random.Range( 1, 100 );
+        newGame.StreamerRating = Random.Range( 1, 100 );
+
+        //Determine game's price
+        var sectionA = ( float )( ( float )newGame.CommunityRating / 100f ) * 0.3f;
+        var sectionB = ( float )( ( float )newGame.CriticRating / 100f ) * 2.0f;
+        var sectionC = ( float )( ( float )newGame.StreamerRating / 100f ) * 0.6f;
+
+        sectionA = Mathf.Round( ( sectionA ) * 100 ) / 100;
+        sectionB = Mathf.Round( ( sectionB ) * 100 ) / 100;
+        sectionC = Mathf.Round( ( sectionC ) * 100 ) / 100;
+
+        newGame.Price = sectionA * sectionB * sectionC;
+
+        //Limit games to $60 max and $5 min
+        newGame.Price *= 900;
+        newGame.Price = Mathf.Clamp( newGame.Price, 5.00f, 60.00f );
+        newGame.Price = Mathf.Round( newGame.Price );
+
+        return newGame;
+    }
 }
 
 public class GameManager : MonoBehaviour
@@ -82,8 +125,16 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player Stats
     /// </summary>
+    //Personal
+    public int Skill { get; private set; }
+    public int Charisma { get; private set; }
+    public int Intuition { get; private set; }
+
+    //Career
     public string StreamerName { get; private set; }
+    public float Money { get; private set; }
     public int Followers { get; private set; }
+    public int BestViewers { get; private set; }
     public int Viewers { get; private set; }
     bool bGamePaused = false, bGameStarted = false;
     public bool IsLive { get; private set; }
@@ -92,10 +143,17 @@ public class GameManager : MonoBehaviour
     public Game CurrentGame;
     public List<Game> PlayerOwnedGames;
 
+    ///Session variables
+    ///--
+    public float StartCash { get; private set; }
+    public float StartFollowers { get; private set; }
+
     /// <summary>
     /// Live Variables
     /// </summary>
-    float CurrentStreamTime, TotalStreamTime = 30;
+    public float TotalUpTime { get; private set; }
+    public float CurrentStreamTime { get; private set; }
+    public float TotalStreamTime { get; private set; }
 
     void Start( )
     {
@@ -111,54 +169,25 @@ public class GameManager : MonoBehaviour
         BtnShop.SetActive( false );
 
         //Set initial values
-        Followers = 0;
+        Skill = 0;
+        Charisma = 0;
+        Intuition = 0;
+
+        Followers = 36;
         Viewers = 0;
+        Money = 60.00f;
         StreamerName = "";
+        TotalStreamTime = 16.0f;
+        StartCash = 0;
         GameMessageList = new List<KeyValuePair<string, string>>( );
         PlayerOwnedGames = new List<Game>( );
 
         //Set game state
         CurrentGameState = GameState.MENU;
         bGameStarted = false;
-
-        //Add player games, debug
-        Game newGame1 = new Game();
-        newGame1.Title = "TEST GAME A";
-        newGame1.CommunityRating = Random.Range(1, 100);
-        newGame1.CriticRating = Random.Range( 1, 100 );
-        newGame1.StreamerRating = Random.Range( 1, 100 );
-
-        Game newGame2 = new Game();
-        newGame2.Title = "TEST GAME B";
-        newGame2.CommunityRating = Random.Range( 1, 100 );
-        newGame2.CriticRating = Random.Range( 1, 100 );
-        newGame2.StreamerRating = Random.Range( 1, 100 );
-
-        Game newGame3 = new Game();
-        newGame3.Title = "TEST GAME C";
-        newGame3.CommunityRating = Random.Range( 1, 100 );
-        newGame3.CriticRating = Random.Range( 1, 100 );
-        newGame3.StreamerRating = Random.Range( 1, 100 );
-
-        Game newGame4 = new Game();
-        newGame4.Title = "TEST GAME D";
-        newGame4.CommunityRating = Random.Range( 1, 100 );
-        newGame4.CriticRating = Random.Range( 1, 100 );
-        newGame4.StreamerRating = Random.Range( 1, 100 );
-
-        Game newGame5 = new Game();
-        newGame5.Title = "TEST GAME E";
-        newGame5.CommunityRating = Random.Range( 1, 100 );
-        newGame5.CriticRating = Random.Range( 1, 100 );
-        newGame5.StreamerRating = Random.Range( 1, 100 );
-
-        PlayerOwnedGames.Add( newGame1 );
-        PlayerOwnedGames.Add( newGame2 );
-        PlayerOwnedGames.Add( newGame3 );
-        PlayerOwnedGames.Add( newGame4 );
-        PlayerOwnedGames.Add( newGame5 );
     }
 
+    float TimeForLastUpdate = 0.0f;
     void Update( )
     {
         //Can we pause?
@@ -194,7 +223,45 @@ public class GameManager : MonoBehaviour
 
             if ( IsLive && !CurrentGame.Equals( default( Game ) ) && CurrentGameState == GameState.GAME )
             {
-                Debug.Log( "LIVE!" );
+                CurrentStreamTime += Time.fixedDeltaTime;
+
+                //Usable ratings
+                var communityValue = 0.1f * ( float )( ( float )CurrentGame.CommunityRating / 100f );
+                var criticValue = 0.1f * ( float )( ( float )CurrentGame.CriticRating / 100f );
+                var streamerValue = 0.1f * ( float )( ( float )CurrentGame.StreamerRating / 100f );
+
+                //Determine update time
+                var nextUpdateTime = TimeForLastUpdate + ( Random.Range( 4, 8 ) - ( ( ( Charisma + Intuition + Skill ) / 15 ) * Followers ) );
+                if ( CurrentStreamTime > nextUpdateTime )
+                {
+                    //Update watchers
+                    var gameWatcherScore = ( ( ( float )CurrentGame.CommunityRating / 100f ) * 0.7f ) + ( ( ( float )CurrentGame.CriticRating / 100f) * 0.5f );
+                    var popularityPenalty = 1 - ( ( float )Followers / ( ( float )CurrentGame.CommunityRating + ( float )CurrentGame.CriticRating + ( float )CurrentGame.StreamerRating ) );
+                    var demandBonus = ( ( ( float )CurrentGame.StreamerRating + ( float )CurrentGame.CommunityRating ) / 200f );
+                    var popularityDemandOffset = demandBonus + popularityPenalty;
+                    gameWatcherScore += popularityDemandOffset;
+
+                    AddWatchers( 1 + ( int )gameWatcherScore );
+
+                    //Update followers
+                    //AddFollowers( 1 + ( int )( ( ( ( Charisma * 0.7f ) + ( Skill * 0.1f ) + ( Intuition * 0.3f ) * 0.5f ) ) + ( Sponsors.Length * 1.3f ) ) );
+
+                    //Update donations
+                    Money += ( 0.63f * Viewers ) + Sponsors.Length * ( Sponsors.Length * 5 );
+                    Money = Mathf.Round( Money * 100 ) / 100;
+
+                    if ( Viewers > BestViewers )
+                    {
+                        BestViewers = Viewers;
+                    }
+
+                    TimeForLastUpdate = CurrentStreamTime;
+                }
+
+                if ( CurrentStreamTime >= TotalStreamTime )
+                {
+                    ToggleLive( );
+                }
             }
         }
     }
@@ -249,11 +316,13 @@ public class GameManager : MonoBehaviour
         while ( bShowingMessage ) yield return null;
 
         ThrowGameMessage( "Getting Games", "Games must be purchased on the <color=#800080ff>Smoke Marketplace</color> before you can stream. Click the  button at the bottom-right corner of the screen to view the latest games on the market." );
+        Marketplace.GetComponent<MarketplaceWindow>( ).RefreshGames( );
         BtnShop.SetActive( true );
 
-        while ( bShowingMessage || PlayerOwnedGames.Count == 0 ) yield return null;
+        while ( ( bShowingMessage || PlayerOwnedGames.Count == 0 ) || ( PlayerOwnedGames.Count > 0 && Marketplace.activeInHierarchy ) ) yield return null;
 
         ThrowGameMessage( "Going Live", "As a streamer, obviously you are required to <i>actually</i> stream. To do this, start/stop your stream by pressing the 'Go Live' button at the bottom of the screen." );
+        BtnLive.SetActive( true );
 
         yield return null;
     }
@@ -307,6 +376,13 @@ public class GameManager : MonoBehaviour
         GameInfoHUD.SetActive( false );
     }
 
+    public void LeaveMarketplace( )
+    {
+        Marketplace.SetActive( false );
+        GameHUD.SetActive( true );
+        GameInfoHUD.SetActive( true );
+    }
+
     public delegate void FollowersChanged( int num );
     public event FollowersChanged OnFollowersGained;
     public event FollowersChanged OnFollowersLost;
@@ -330,18 +406,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public delegate void ViewersChanged( int num );
+    public event ViewersChanged OnViewersGained;
+    public event ViewersChanged OnViewersLost;
+    public void AddWatchers( int numOfNewWatchers )
+    {
+        Viewers += numOfNewWatchers;
+
+        if ( OnViewersGained != null )
+        {
+            OnViewersGained.Invoke( numOfNewWatchers );
+        }
+    }
+
+    public void RemoveWatchers( int numOfLostWatchers )
+    {
+        Viewers -= numOfLostWatchers;
+
+        if ( OnViewersLost != null )
+        {
+            OnViewersLost.Invoke( numOfLostWatchers );
+        }
+    }
+
     public void ToggleLive( )
     {
         IsLive = !IsLive;
 
         if ( IsLive )
         {
-            CurrentStreamTime = 0;
 
             //show game list
             GameObject GameListWin = (GameObject)GameObject.Instantiate( Resources.Load( "GameListWindow" ), Vector3.zero, Quaternion.identity );
             GameListWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
         }
+        else
+        {
+            CurrentGame = default( Game );
+
+            //Show post live window
+            GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
+            PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
+        }
+
+        BtnShop.GetComponent<Button>( ).interactable = !IsLive;
     }
 
     public void SetPlayerName( string newName )
@@ -407,5 +515,25 @@ public class GameManager : MonoBehaviour
     public void CloseMessage( )
     {
         bShowingMessage = false;
+    }
+
+    public void PurchaseGame( Game newGame )
+    {
+        //If we don't already own this item
+        if ( !newGame.Owned )
+        {
+            GameManager.Instance.PlayerOwnedGames.Add( newGame );
+            Money -= newGame.Price;
+        }
+    }
+
+    public void BeginStream( Game gameToStream )
+    {
+        StartCash = Money;
+        StartFollowers = Followers;
+        CurrentStreamTime = 0;
+        BestViewers = 0;
+        TimeForLastUpdate = 0;
+        CurrentGame = gameToStream;
     }
 }
