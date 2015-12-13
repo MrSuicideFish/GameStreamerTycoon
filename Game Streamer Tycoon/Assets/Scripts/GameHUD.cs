@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class GameHUD : MonoBehaviour
 {
     public GameObject LiveWindow;
-    public Text AmountOfCash, NumOfFollowers, NumOfViewers;
+    public Text AmountOfCash, NumOfFollowers, NumOfViewers, PlayerName;
     public Button LiveButton, MarketButton;
 
     public RectTransform LiveProgressBar;
@@ -21,9 +21,10 @@ public class GameHUD : MonoBehaviour
 
     void FixedUpdate( )
     {
+        PlayerName.text = GameManager.Instance.StreamerName;
         AmountOfCash.text = "$" + ( Mathf.Round( GameManager.Instance.Money * 100 ) / 100 ).ToString( );
         NumOfFollowers.text = GameManager.Instance.Followers.ToString( );
-        NumOfViewers.text = GameManager.Instance.Viewers.ToString( );
+        //NumOfViewers.text = GameManager.Instance.Viewers.ToString( );
 
         LiveButton.interactable = !GameManager.Instance.IsLive;
         MarketButton.interactable = !GameManager.Instance.IsLive;
@@ -43,7 +44,7 @@ public class GameHUD : MonoBehaviour
 
             //Update progress bar
             float progressPerc = GameManager.Instance.CurrentStreamTime / GameManager.Instance.TotalStreamTime;
-            float barWidth = 800f * progressPerc;
+            float barWidth = 1305f * progressPerc;
             LiveProgressBar.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, barWidth );
         }
         else

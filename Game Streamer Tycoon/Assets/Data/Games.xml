@@ -1,0 +1,16 @@
+﻿<Games id="gameList">
+  <Game>
+	<title>Lord of the Square Dancing Fantasy</title>
+	<Developer>Akari</Developer>
+	<Community>80</Community>
+	<Critic>60</Critic>
+	<Streamer>80</Streamer>
+  </Game>
+    <Game>
+	<title>Disturbing Fighter Dudes</title>
+	<Developer>GA Sports</Developer>
+	<Community>80</Community>
+	<Critic>70</Critic>
+	<Streamer>20</Streamer>
+  </Game>
+</Games>

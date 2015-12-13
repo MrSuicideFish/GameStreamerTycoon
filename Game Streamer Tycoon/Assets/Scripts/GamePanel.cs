@@ -7,7 +7,8 @@ public delegate void GameSelect(int idx);
 public class GamePanel : MonoBehaviour
 {
     public Game ParentGame;
-    public Text Title, Developer, Sponsored, Price;
+    public Text Title, Developer, Price;
+    public Image Sponsored;
     public RectTransform CriticVal, CommunityVal, StreamerVal;
     public Outline PanelOutline;
 

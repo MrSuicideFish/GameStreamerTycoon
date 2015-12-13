@@ -49,19 +49,11 @@ public struct Game
 
     public static Game CreateGame( )
     {
-        Game newGame = new Game( );
-        newGame.Title = "SomeTitle";
-        newGame.Developer = "SomeDeveloper";
-        newGame.Description = "Some Description Here";
+        Game newGame = GameService.GetRandomGame( );
 
         //Give game random rating
         int ratingIdx = Random.Range( 1, 4 );
         newGame.EsrbRating = ( ESRBRating )ratingIdx;
-
-        //Give game random scores
-        newGame.CommunityRating = Random.Range( 1, 100 );
-        newGame.CriticRating = Random.Range( 1, 100 );
-        newGame.StreamerRating = Random.Range( 1, 100 );
 
         //Determine game's price
         var sectionA = ( float )( ( float )newGame.CommunityRating / 100f ) * 0.3f;
@@ -114,6 +106,8 @@ public class GameManager : MonoBehaviour
     public GameObject StartGameScreen, InstructionScreen, Marketplace,
         PauseScreen, GameHUD, GameInfoHUD, BtnLive, BtnShop;
 
+    public Text WebsiteHeaderText;
+
     /// <summary>
     /// Game Messages
     /// </summary>
@@ -147,6 +141,7 @@ public class GameManager : MonoBehaviour
     ///--
     public float StartCash { get; private set; }
     public float StartFollowers { get; private set; }
+    List<Game> GameStreamHistory = new List<Game>( );
 
     /// <summary>
     /// Live Variables
@@ -157,6 +152,9 @@ public class GameManager : MonoBehaviour
 
     void Start( )
     {
+        //Initiate data
+        GameService.InitDocument( );
+
         //Show the start game screen
         StartGameScreen.SetActive( true ); // ON
         InstructionScreen.SetActive( false );
@@ -173,7 +171,7 @@ public class GameManager : MonoBehaviour
         Charisma = 0;
         Intuition = 0;
 
-        Followers = 36;
+        Followers = 0;
         Viewers = 0;
         Money = 60.00f;
         StreamerName = "";
@@ -266,6 +264,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void BeginStream( Game gameToStream )
+    {
+        StartCash = Money;
+        StartFollowers = Followers;
+        CurrentStreamTime = 0;
+        BestViewers = 0;
+        TimeForLastUpdate = 0;
+        CurrentGame = gameToStream;
+    }
+
+    public void EndStream( )
+    {
+        GameStreamHistory.Add( CurrentGame );
+
+        StartCash = 0;
+        StartFollowers = 0;
+        CurrentStreamTime = 0;
+        BestViewers = 0;
+        CurrentGame = default( Game );
+        TimeForLastUpdate = 0;
+    }
+
     /// <summary>
     /// Start game and go to game hud & screen
     /// </summary>
@@ -303,7 +323,9 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        //Remove player window
+        WebsiteHeaderText.text = "CHANGED";
+
+        //Remove player name window
         GameObject.Destroy( playerNameWin );
 
         AddFollowers( 2 );
@@ -442,8 +464,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            CurrentGame = default( Game );
-
+            EndStream( );
             //Show post live window
             GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
             PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
@@ -527,13 +548,4 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BeginStream( Game gameToStream )
-    {
-        StartCash = Money;
-        StartFollowers = Followers;
-        CurrentStreamTime = 0;
-        BestViewers = 0;
-        TimeForLastUpdate = 0;
-        CurrentGame = gameToStream;
-    }
 }
