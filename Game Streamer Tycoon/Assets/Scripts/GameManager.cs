@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
     public GameObject StartGameScreen, InstructionScreen, Marketplace,
         PauseScreen, GameHUD, GameInfoHUD, BtnLive, BtnShop;
 
-    public Text WebsiteHeaderText;
+    public InputField WebsiteHeaderText;
 
     /// <summary>
     /// Game Messages
@@ -323,7 +323,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        WebsiteHeaderText.text = "CHANGED";
+        WebsiteHeaderText.text = WebsiteHeaderText.text + StreamerName;
 
         //Remove player name window
         GameObject.Destroy( playerNameWin );
@@ -460,14 +460,15 @@ public class GameManager : MonoBehaviour
 
             //show game list
             GameObject GameListWin = (GameObject)GameObject.Instantiate( Resources.Load( "GameListWindow" ), Vector3.zero, Quaternion.identity );
-            GameListWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
+            GameListWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform, false );
         }
         else
         {
             EndStream( );
+
             //Show post live window
             GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
-            PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
+            PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform, false );
         }
 
         BtnShop.GetComponent<Button>( ).interactable = !IsLive;
