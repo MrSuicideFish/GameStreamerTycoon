@@ -7,8 +7,14 @@ using System.Collections.Generic;
 
 public class GameHUD : MonoBehaviour
 {
+    public GameObject LiveWindow, LiveProgressBar;
     public Text AmountOfCash, NumOfFollowers, NumOfViewers;
     public Button LiveButton;
+
+    void Start( )
+    {
+        LiveWindow.SetActive( false );
+    }
 
     void FixedUpdate( )
     {
@@ -20,5 +26,6 @@ public class GameHUD : MonoBehaviour
     {
         GameManager.Instance.ToggleLive( );
         LiveButton.interactable = !GameManager.Instance.IsLive;
+        LiveWindow.SetActive( GameManager.Instance.IsLive );
     }
 }

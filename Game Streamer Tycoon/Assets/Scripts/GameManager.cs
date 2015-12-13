@@ -5,6 +5,41 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum ESRBRating
+{
+    Everyone,
+    Teen,
+    Mature,
+    Adult
+}
+
+/// <summary>
+/// Games
+/// Rating system from 0 - 100
+/// </summary>
+public struct Game
+{
+    public string Title,
+        Developer,
+        Description;
+
+    public float Price;
+
+    public int CommunityRating,
+        CriticRating,
+        StreamerRating;
+
+    public bool IsSponsored
+    {
+        get
+        {
+            return GameManager.Instance.Sponsors.Contains( Developer );
+        }
+    }
+
+    public ESRBRating EsrbRating;
+}
+
 public class GameManager : MonoBehaviour
 {
     /// <summary>
@@ -33,12 +68,13 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Game System Objects
     /// </summary>
-    public GameObject StartGameScreen, InstructionScreen,
-        PauseScreen, GameHUD, GameInfoHUD;
+    public GameObject StartGameScreen, InstructionScreen, Marketplace,
+        PauseScreen, GameHUD, GameInfoHUD, BtnLive, BtnShop;
 
     /// <summary>
     /// Game Messages
     /// </summary>
+    public bool bShowingMessage = false;
     GameObject CurrentMessageWindow;
     //string - title, string - dialog
     List<KeyValuePair<string,string>> GameMessageList = new List<KeyValuePair<string, string>>( );
@@ -53,24 +89,74 @@ public class GameManager : MonoBehaviour
     public bool IsLive { get; private set; }
     public string[] Sponsors = new string[ 0 ];
 
+    public Game CurrentGame;
+    public List<Game> PlayerOwnedGames;
+
+    /// <summary>
+    /// Live Variables
+    /// </summary>
+    float CurrentStreamTime, TotalStreamTime = 30;
+
     void Start( )
     {
         //Show the start game screen
         StartGameScreen.SetActive( true ); // ON
         InstructionScreen.SetActive( false );
+        Marketplace.SetActive( false );
         PauseScreen.SetActive( false );
         GameHUD.SetActive( false );
         GameInfoHUD.SetActive( false );
+
+        BtnLive.SetActive( false );
+        BtnShop.SetActive( false );
 
         //Set initial values
         Followers = 0;
         Viewers = 0;
         StreamerName = "";
         GameMessageList = new List<KeyValuePair<string, string>>( );
+        PlayerOwnedGames = new List<Game>( );
 
         //Set game state
         CurrentGameState = GameState.MENU;
         bGameStarted = false;
+
+        //Add player games, debug
+        Game newGame1 = new Game();
+        newGame1.Title = "TEST GAME A";
+        newGame1.CommunityRating = Random.Range(1, 100);
+        newGame1.CriticRating = Random.Range( 1, 100 );
+        newGame1.StreamerRating = Random.Range( 1, 100 );
+
+        Game newGame2 = new Game();
+        newGame2.Title = "TEST GAME B";
+        newGame2.CommunityRating = Random.Range( 1, 100 );
+        newGame2.CriticRating = Random.Range( 1, 100 );
+        newGame2.StreamerRating = Random.Range( 1, 100 );
+
+        Game newGame3 = new Game();
+        newGame3.Title = "TEST GAME C";
+        newGame3.CommunityRating = Random.Range( 1, 100 );
+        newGame3.CriticRating = Random.Range( 1, 100 );
+        newGame3.StreamerRating = Random.Range( 1, 100 );
+
+        Game newGame4 = new Game();
+        newGame4.Title = "TEST GAME D";
+        newGame4.CommunityRating = Random.Range( 1, 100 );
+        newGame4.CriticRating = Random.Range( 1, 100 );
+        newGame4.StreamerRating = Random.Range( 1, 100 );
+
+        Game newGame5 = new Game();
+        newGame5.Title = "TEST GAME E";
+        newGame5.CommunityRating = Random.Range( 1, 100 );
+        newGame5.CriticRating = Random.Range( 1, 100 );
+        newGame5.StreamerRating = Random.Range( 1, 100 );
+
+        PlayerOwnedGames.Add( newGame1 );
+        PlayerOwnedGames.Add( newGame2 );
+        PlayerOwnedGames.Add( newGame3 );
+        PlayerOwnedGames.Add( newGame4 );
+        PlayerOwnedGames.Add( newGame5 );
     }
 
     void Update( )
@@ -96,12 +182,19 @@ public class GameManager : MonoBehaviour
                 }
             }
             else
+            {
                 bSwitchingGameMessages = false;
+            }
 
             if ( string.IsNullOrEmpty( StreamerName ) )
             {
                 //Can't Continue
                 return;
+            }
+
+            if ( IsLive && !CurrentGame.Equals( default( Game ) ) && CurrentGameState == GameState.GAME )
+            {
+                Debug.Log( "LIVE!" );
             }
         }
     }
@@ -146,12 +239,21 @@ public class GameManager : MonoBehaviour
         //Remove player window
         GameObject.Destroy( playerNameWin );
 
-        yield return new WaitForSeconds( 2 );
         AddFollowers( 2 );
+
+        while ( bShowingMessage ) yield return null;
 
         //Show welcome screen
         ThrowGameMessage( "New Followers", "Congratulations! You have your first followers! They're your parents but a follow is a follow in the world of streaming.\n As you gain followers, you will begin to notice a rise in opportunities coming your way." );
-        ThrowGameMessage( "Going Live", "As a streamer, obviously you are required to <i>actually</i> stream. \n To do this, start/stop your stream by pressing the 'Go Live' button at the bottom of the screen." );
+
+        while ( bShowingMessage ) yield return null;
+
+        ThrowGameMessage( "Getting Games", "Games must be purchased on the <color=#800080ff>Smoke Marketplace</color> before you can stream. Click the  button at the bottom-right corner of the screen to view the latest games on the market." );
+        BtnShop.SetActive( true );
+
+        while ( bShowingMessage || PlayerOwnedGames.Count == 0 ) yield return null;
+
+        ThrowGameMessage( "Going Live", "As a streamer, obviously you are required to <i>actually</i> stream. To do this, start/stop your stream by pressing the 'Go Live' button at the bottom of the screen." );
 
         yield return null;
     }
@@ -163,6 +265,7 @@ public class GameManager : MonoBehaviour
     {
         StartGameScreen.SetActive( true );
         InstructionScreen.SetActive( false );
+        Marketplace.SetActive( false );
         PauseScreen.SetActive( false );
         GameHUD.SetActive( false );
         GameInfoHUD.SetActive( false );
@@ -198,6 +301,12 @@ public class GameManager : MonoBehaviour
         CurrentGameState = bGamePaused ? GameState.PAUSE : GameState.GAME;
     }
 
+    public void GoToMarketplace( )
+    {
+        Marketplace.SetActive( true );
+        GameInfoHUD.SetActive( false );
+    }
+
     public delegate void FollowersChanged( int num );
     public event FollowersChanged OnFollowersGained;
     public event FollowersChanged OnFollowersLost;
@@ -227,6 +336,8 @@ public class GameManager : MonoBehaviour
 
         if ( IsLive )
         {
+            CurrentStreamTime = 0;
+
             //show game list
             GameObject GameListWin = (GameObject)GameObject.Instantiate( Resources.Load( "GameListWindow" ), Vector3.zero, Quaternion.identity );
             GameListWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform.GetChild( 0 ), false );
@@ -247,7 +358,7 @@ public class GameManager : MonoBehaviour
         KeyValuePair<string, string> newMessage = new KeyValuePair<string, string>( title, dialog );
 
         //Push message to top of stack
-        GameMessageList.Insert( 0, newMessage );
+        GameMessageList.Add( newMessage );
     }
 
     bool bSwitchingGameMessages = false;
@@ -264,6 +375,8 @@ public class GameManager : MonoBehaviour
 
             winTitle.text = GameMessageList[ 0 ].Key;
             winDialog.text = GameMessageList[ 0 ].Value;
+
+            bShowingMessage = true;
 
             if ( GameMessageList.Count > 1 )
             {
@@ -282,5 +395,17 @@ public class GameManager : MonoBehaviour
                 GameMessageList.RemoveAt( 0 );
             }
         }
+    }
+
+    public static int RatingToWidth( int rating, int maxWidth )
+    {
+        float ratingPerc = ( float )rating / 100f;
+        int val = ( int )( ( float )maxWidth * ratingPerc );
+        return val;
+    }
+
+    public void CloseMessage( )
+    {
+        bShowingMessage = false;
     }
 }
