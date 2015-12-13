@@ -1,16 +1,398 @@
 ﻿<Games id="gameList">
   <Game>
-	<title>Lord of the Square Dancing Fantasy</title>
-	<Developer>Akari</Developer>
-	<Community>80</Community>
-	<Critic>60</Critic>
-	<Streamer>80</Streamer>
+	  <title>Lord of the Square Dancing Fantasy</title>
+	  <Developer>Akari</Developer>
   </Game>
-    <Game>
-	<title>Disturbing Fighter Dudes</title>
-	<Developer>GA Sports</Developer>
-	<Community>80</Community>
-	<Critic>70</Critic>
-	<Streamer>20</Streamer>
+  <Game>
+	  <title>Disturbing Fighter Dudes</title>
+	  <Developer>GA Sports</Developer>
+  </Game>
+  <Game>
+    <title>Happy Cyborg Apocalypse</title>
+    <Developer>Duosoft</Developer>
+  </Game>
+  <Game>
+    <title>Amphibious Chicken Domination</title>
+    <Developer>Duosoft</Developer>
+  </Game>
+  <Game>
+    <title>Medieval Desert Crusade</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Medieval Desert Crusade</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Bonk's Kung-fu Scam</title>
+    <Developer>Queen Games</Developer>
+  </Game>
+  <Game>
+    <title>Wall Bumber</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Wooden Juggalo Creator</title>
+    <Developer>Generic Arts</Developer>
+  </Game>
+  <Game>
+    <title>Neon Spelling Syndicate</title>
+    <Developer>Akari</Developer>
+  </Game>
+  <Game>
+    <title>Claustrophobic Lizard Boy</title>
+    <Developer>Duosoft</Developer>
+  </Game>
+  <Game>
+    <title>AtkAtk!</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Vampire Speed Safari</title>
+    <Developer>Duosoft</Developer>
+  </Game>
+  <Game>
+    <title>Relentless Driving Sisters</title>
+    <Developer>Legend Games</Developer>
+  </Game>
+  <Game>
+    <title>Lovely Frog Slaughter</title>
+    <Developer>Minisoft</Developer>
+  </Game>
+  <Game>
+    <title>Cogs of Battle</title>
+    <Developer>Legend Games</Developer>
+  </Game>
+  <Game>
+    <title>Ultraviolent Math All-Stars</title>
+    <Developer>GA Sports</Developer>
+  </Game>
+  <Game>
+    <title>Armored Animal World Cup</title>
+    <Developer>4K Games</Developer>
+  </Game>
+  <Game>
+    <title>Exquisite Banana</title>
+    <Developer>4K Games</Developer>
+  </Game>
+  <Game>
+    <title>World of Casino of Love</title>
+    <Developer>Commonware</Developer>
+  </Game>
+  <Game>
+    <title>Galactic Robot Extra</title>
+    <Developer>Commonware</Developer>
+  </Game>
+  <Game>
+    <title>Amateur Sudoku Academy</title>
+    <Developer>Generic Arts</Developer>
+  </Game>
+  <Game>
+    <title>Golden Makeover - Gold Edition</title>
+    <Developer>Cosmetic Games</Developer>
+  </Game>
+  <Game>
+    <title>Little Hamster Anthology</title>
+    <Developer>Legend Games</Developer>
+  </Game>
+  <Game>
+    <title>Trendy Fun Siege</title>
+    <Developer>Fire Games Inc.</Developer>
+  </Game>
+  <Game>
+    <title>Rad Penguin Remix</title>
+    <Developer>Akari</Developer>
+  </Game>
+  <Game>
+    <title>Boring Snowboard Destruction</title>
+    <Developer>Duosoft</Developer>
+  </Game>
+  <Game>
+    <title>Miniature Racing Competition</title>
+    <Developer>Commonware</Developer>
+  </Game>
+  <Game>
+    <title>Miniature Racing Competition</title>
+    <Developer>GA Sports</Developer>
+  </Game>
+  <Game>
+    <title>Viking Dating Rave</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Shady Goblin Daredevils</title>
+    <Developer>Studio 69</Developer>
+  </Game>
+  <Game>
+    <title>Allied Dragon Romp</title>
+    <Developer>Cosmetic Games</Developer>
+  </Game>
+  <Game>
+    <title>The Struggle is Real</title>
+    <Developer>Queen Games</Developer>
+  </Game>
+  <Game>
+    <title>Neurotic Beautician Playhouse</title>
+    <Developer>4K Games</Developer>
+  </Game>
+  <Game>
+    <title>Revenge of the Yeti Inspector</title>
+    <Developer>Broken Pixel</Developer>
+  </Game>
+  <Game>
+    <title>Invisible Helicopter Rebellion</title>
+    <Developer>Atomic Bomb Software</Developer>
+  </Game>
+  <Game>
+    <title>Glowing Wizard Warrior</title>
+    <Developer>Cosmetic Games</Developer>
+  </Game>
+  <Game>
+    <title>Ingenious Bubble Mansion</title>
+    <Developer>Blank Script Games</Developer>
+  </Game>
+  <Game>
+    <title>Impossible Beat Troopers</title>
+    <Developer>Blank Script Games</Developer>
+  </Game>
+  <Game>
+    <title>The Glory of Gimp Frenzy</title>
+    <Developer>Blank Script Games</Developer>
+  </Game>
+  <Game>
+    <title>Moped Dystopia</title>
+    <Developer>BudgetSoft</Developer>
+  </Game>
+  <Game>
+    <title>Silly Architecture Conspiracy</title>
+    <Developer>Alt F4</Developer>
+  </Game>
+  <Game>
+    <title>Roman Bungie Simulator</title>
+    <Developer>Alt F4</Developer>
+  </Game>
+  <Game>
+    <title>Cute Unicorn Warrior</title>
+    <Developer>Alt F4</Developer>
+  </Game>
+  <Game>
+    <title>Haunted Burger Hell</title>
+    <Developer>Alt F4</Developer>
+  </Game>
+  <Game>
+    <title>Kamikaze Jazz Zone</title>
+    <Developer>Alt F4</Developer>
+  </Game>
+  <Game>
+    <title>NBA Godzilla Exhibition</title>
+    <Developer>GA Sports</Developer>
+  </Game>
+  <Game>
+    <title>Magical Hardware Kid</title>
+    <Developer>Rage Quit</Developer>
+  </Game>
+  <Game>
+    <title>Return of Spatula Raider</title>
+    <Developer>Rage Quit</Developer>
+  </Game>
+  <Game>
+    <title>Gothic Bungie Unit</title>
+    <Developer>Rage Quit</Developer>
+  </Game>
+  <Game>
+    <title>Secret of the Kangaroo Groove</title>
+    <Developer>Rage Quit</Developer>
+  </Game>
+  <Game>
+    <title>Alcoholic Toon Maniac</title>
+    <Developer>Rage Quit</Developer>
+  </Game>
+  <Game>
+    <title>Blasphemous River Groove</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>All-American Stunt Chase</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>Remote Yak Frenzy</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>Amazon Beat Park</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>Unforgettable Zamboni Safari</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>Nasty Business House</title>
+    <Developer>Console Pesent Games</Developer>
+  </Game>
+  <Game>
+    <title>Custom Dance Omega</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Amish UFO Disaster</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Asian Lego Camp</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Stoic Bowling Nightmare</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Screaming Mountain Climber Gang</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Biblical Raccoon Brawl</title>
+    <Developer>Ooey Gooey Games</Developer>
+  </Game>
+  <Game>
+    <title>Scandinavian Nudist of Doom</title>
+    <Developer>Level Up Games</Developer>
+  </Game>
+  <Game>
+    <title>Intellectual Forklift Daredevils</title>
+    <Developer>Level Up Games</Developer>
+  </Game>
+  <Game>
+    <title>Third-World Paintball Slam</title>
+    <Developer>Level Up Games</Developer>
+  </Game>
+  <Game>
+    <title>Urban Blimp Mayhem</title>
+    <Developer>Level Up Games</Developer>
+  </Game>
+  <Game>
+    <title>Crazy Monster Brothers</title>
+    <Developer>Level Up Games</Developer>
+  </Game>
+  <Game>
+    <title>Little Florist</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Small-Time Bingo Simulator</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Big-Time Spelunking Fiesta</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Nudist Llama Havoc</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Nuclear Lightning Hospital</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Cyber Mafia Hop-A-Bout</title>
+    <Developer>Ostrich Neck Studio</Developer>
+  </Game>
+  <Game>
+    <title>Teleport 3</title>
+    <Developer>Value</Developer>
+  </Game>
+  <Game>
+    <title>Full Life: 3</title>
+    <Developer>Value</Developer>
+  </Game>
+  <Game>
+    <title>Pure-Strike: 3</title>
+    <Developer>Value</Developer>
+  </Game>
+  <Game>
+    <title>Team Bunker: 3</title>
+    <Developer>Value</Developer>
+  </Game>
+  <Game>
+    <title>Not Dead Yet: 3</title>
+    <Developer>Value</Developer>
+  </Game>
+  <Game>
+    <title>Clean Bomb</title>
+    <Developer>Splash Healing</Developer>
+  </Game>
+  <Game>
+    <title>Nuclear Sandwich Inspector</title>
+    <Developer>Splash Healing</Developer>
+  </Game>
+  <Game>
+    <title>All-Night Murder Forever</title>
+    <Developer>Splash Healing</Developer>
+  </Game>
+  <Game>
+    <title>Vegetarian Mech Solid</title>
+    <Developer>Splash Healing</Developer>
+  </Game>
+  <Game>
+    <title>Amazon Sushi</title>
+    <Developer>Splash Healing</Developer>
+  </Game>
+  <Game>
+    <title>Occult Zombie Epidemic</title>
+    <Developer>Pentakill Corp.</Developer>
+  </Game>
+  <Game>
+    <title>Golden Bazooka Massacre</title>
+    <Developer>Pentakill Corp.</Developer>
+  </Game>
+  <Game>
+    <title>Political Dog Throwdown</title>
+    <Developer>Pentakill Corp.</Developer>
+  </Game>
+  <Game>
+    <title>Zombie Bingo Camp</title>
+    <Developer>Pentakill Corp.</Developer>
+  </Game>
+  <Game>
+    <title>Street Wagon Slaughter</title>
+    <Developer>Punkbish</Developer>
+  </Game>
+  <Game>
+    <title>Astral Manlove Rebellion</title>
+    <Developer>Punkbish</Developer>
+  </Game>
+  <Game>
+    <title>Latino Furry Encounter</title>
+    <Developer>Punkbish</Developer>
+  </Game>
+  <Game>
+    <title>Future Tricycle Revolution</title>
+    <Developer>Punkbish</Developer>
+  </Game>
+  <Game>
+    <title>Professional 3D Annihilation</title>
+    <Developer>Punkbish</Developer>
+  </Game>
+  <Game>
+    <title>Fantastic Cheese Maxx</title>
+    <Developer>Shizzy Stain Games</Developer>
+  </Game>
+  <Game>
+    <title>Nostalgic Valkyrie Caper</title>
+    <Developer>Shizzy Stain Games</Developer>
+  </Game>
+  <Game>
+    <title>Forgotten Bubble Gaiden</title>
+    <Developer>Shizzy Stain Games</Developer>
+  </Game>
+  <Game>
+    <title>Claustrophobic Battle Dynasty</title>
+    <Developer>Shizzy Stain Games</Developer>
+  </Game>
+  <Game>
+    <title>Twin Harpoon Ignition</title>
+    <Developer>Shizzy Stain Games</Developer>
   </Game>
 </Games>
