@@ -450,9 +450,17 @@ public class GameManager : MonoBehaviour
     {
         Followers += numOfNewFollowers;
 
-        if ( Followers % 10 == 0 )
+        if ( Followers % ( 10 * ( 1 + ( SkillLevel + SocialLevel + VerbalLevel + HardwareLevel ) ) ) == 0 )
         {
             GivePlayerSkillPoint( );
+        }
+
+        if ( Followers > 150 && Sponsors.Length == 0 )
+        {
+            Sponsors = new string[ 1 ];
+            Sponsors[ 0 ] = "GA Sports";
+
+            ThrowGameMessage( "Sponsor", "Hi, " + GameManager.instance.StreamerName + "! We at GA Sports would love to sponsor you! Unforunately, this feature wasn't completed in time so we'll just say you're on our team." );
         }
 
         if ( OnFollowersGained != null )
@@ -526,6 +534,18 @@ public class GameManager : MonoBehaviour
         if ( OnLikeLost != null )
         {
             OnLikeLost.Invoke( numOfLostLikes );
+        }
+    }
+
+    public delegate void MoneyChanged( int amount );
+    public event MoneyChanged OnMoneyEarned;
+    public void AddMoney( int amount )
+    {
+        Money += amount;
+
+        if ( OnMoneyEarned != null )
+        {
+            OnMoneyEarned.Invoke( amount );
         }
     }
 

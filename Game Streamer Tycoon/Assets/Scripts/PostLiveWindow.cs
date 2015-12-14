@@ -286,6 +286,11 @@ public class PostLiveWindow : MonoBehaviour
         CommentB.text += GameToResolve.CriticRating > 60 ? PosSocial[ Random.Range( 0, 2 ) ] : NegCommunity[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
         CommentC.text += GameToResolve.StreamerRating> 30 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSocial[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
 
+        //Give player cash
+        float potentialEarnings = ( 2f * ( float )GameManager.Instance.Likes ) + ( 1.4f * ( float )GameManager.Instance.Viewers );
+        potentialEarnings *= ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers );
+        GameManager.Instance.AddMoney( ( int )potentialEarnings );
+
         GoToStatistics( );
     }
 
