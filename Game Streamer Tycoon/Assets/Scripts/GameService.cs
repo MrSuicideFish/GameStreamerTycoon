@@ -30,10 +30,6 @@ public class GameService : MonoBehaviour
         newGame.Title = gameNode.ChildNodes[ 0 ].InnerText; //Title
         newGame.Developer = gameNode.ChildNodes[ 1 ].InnerText; //Developer
 
-        newGame.CommunityRating = Convert.ToInt32( gameNode.ChildNodes[ 2 ].InnerText );//Community rating
-        newGame.CriticRating = Convert.ToInt32( gameNode.ChildNodes[ 3 ].InnerText );   //Community rating
-        newGame.StreamerRating = Convert.ToInt32( gameNode.ChildNodes[ 4 ].InnerText ); //Community rating
-
         return newGame;
     }
 }

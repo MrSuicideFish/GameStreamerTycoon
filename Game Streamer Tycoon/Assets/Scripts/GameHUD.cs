@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class GameHUD : MonoBehaviour
 {
     public GameObject LiveWindow;
-    public Text AmountOfCash, NumOfFollowers, NumOfViewers, PlayerName;
+    public Text AmountOfCash, NumOfFollowers, NumOfViewers, NumOfLikes, PlayerName;
     public Button LiveButton, MarketButton;
 
     public RectTransform LiveProgressBar;
@@ -24,13 +24,15 @@ public class GameHUD : MonoBehaviour
         PlayerName.text = GameManager.Instance.StreamerName;
         AmountOfCash.text = "$" + ( Mathf.Round( GameManager.Instance.Money * 100 ) / 100 ).ToString( );
         NumOfFollowers.text = GameManager.Instance.Followers.ToString( );
-        //NumOfViewers.text = GameManager.Instance.Viewers.ToString( );
 
         LiveButton.interactable = !GameManager.Instance.IsLive;
         MarketButton.interactable = !GameManager.Instance.IsLive;
-
+        
         if ( GameManager.Instance.IsLive )
         {
+            NumOfViewers.text = GameManager.Instance.Viewers.ToString( );
+            NumOfLikes.text = GameManager.Instance.Likes.ToString( );
+
             if ( CurrentGame.Equals( default( Game ) ) ) 
                 CurrentGame = GameManager.Instance.CurrentGame;
             else if ( LiveWindow.transform.GetChild( 0 ).GetComponent<Text>( ).text != CurrentGame.Title )

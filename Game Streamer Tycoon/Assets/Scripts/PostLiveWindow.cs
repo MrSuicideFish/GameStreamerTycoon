@@ -20,7 +20,7 @@ public class PostLiveWindow : MonoBehaviour
     {
         GameNameTitle.text = GameManager.Instance.CurrentGame.Title;
         FollowersGained.text = "Followers Gained: " + ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers ).ToString( );
-        TotalWatchers.text = "Total Watchers: " + GameManager.Instance.BestViewers.ToString( );
+        TotalWatchers.text = "Total Watchers: " + GameManager.Instance.Viewers.ToString( );
         TotalDonations.text = "Total Donations: $" + ( GameManager.Instance.Money - GameManager.Instance.StartCash ).ToString( );
 
         //Determine comments
