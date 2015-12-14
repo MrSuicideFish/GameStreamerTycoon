@@ -142,6 +142,11 @@ public class GameManager : MonoBehaviour
     public bool IsLive { get; private set; }
     public string[] Sponsors = new string[ 0 ];
 
+    public bool bRealtimePaused = false;
+
+    public bool bPlayerHasFirstLike = false;
+    public bool bPlayerHasFirstWatcher = false;
+
     public Game CurrentGame;
     public List<Game> PlayerOwnedGames;
 
@@ -232,26 +237,48 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            if ( IsLive && !CurrentGame.Equals( default( Game ) ) && CurrentGameState == GameState.GAME )
+            if ( IsLive && !CurrentGame.Equals( default( Game ) ) && CurrentGameState == GameState.GAME && !bRealtimePaused)
             {
                 CurrentStreamTime += Time.fixedDeltaTime;
 
                 if ( Mathf.Round( CurrentStreamTime % 1 ) == 0 && bCanUpdateStreamStats )
                 {
-                    int streamAttractiveness = ( ( SocialLevel + VerbalLevel ) * 2 ) + ( ( CurrentGame.CommunityRating + CurrentGame.CriticRating ) / 100 );
+                    bool bStreamAlmostOver = false;
 
-                    FollowersWatchingStream = streamAttractiveness * ( ( int )TotalStreamTime / ( int )CurrentStreamTime );
-                    if ( FollowersWatchingStream > Followers )
+                    //Get total reach of consumers
+                    float fanbaseScale = Random.Range( 17, 35 ) + Followers + CurrentGame.CommunityRating;
+                    
+                    //grasp a percent of consumers
+                    float potentialShare = 0.2f + ( fanbaseScale * ( ( SocialLevel + VerbalLevel + SkillLevel + HardwareLevel ) / 15 ) );
+                    float finalShare = fanbaseScale * potentialShare;
+                    finalShare = Mathf.Round( finalShare ) / 3;
+
+                    //Begin losing viewers towards end of stream
+                    if ( CurrentStreamTime / TotalStreamTime > 0.5f )
                     {
-                        FollowersWatchingStream = Followers;
+                        finalShare -= ( int )( ( CurrentStreamTime / TotalStreamTime ) * Random.Range( 5f, 10f ) ); //remove time folks
+                        bStreamAlmostOver = true;
+                    }
+                    else
+                    {
+                        //Add timescale
+                        finalShare += ( int )( ( CurrentStreamTime / TotalStreamTime ) * Random.Range( 3f, 7f ) ); //remove time folks
                     }
 
-                    float streamLengthMultiplier = ( CurrentStreamTime / TotalStreamTime );
-                    AddWatchers( ( int )( ( streamAttractiveness + FollowersWatchingStream ) ) );
+                    //Add duplicate penalty
+                    finalShare -= GameStreamHistory.Count( x => x.Title == CurrentGame.Title ) * 5;
 
-                    float watcherEnthusiasm = ( ( CurrentGame.CommunityRating / 50 ) + SocialLevel + VerbalLevel + SkillLevel + HardwareLevel ) * ( CurrentStreamTime / TotalStreamTime );
-                    watcherEnthusiasm = ( watcherEnthusiasm / Viewers ) * Random.Range( 10, 25 );
-                    AddLikes( ( int )watcherEnthusiasm );
+                    //Add watchers this update
+                    AddWatchers( ( int )finalShare );
+
+                    //Determine what perc of viewers this update like the stream
+                    if ( !bStreamAlmostOver || (int)finalShare > 0 )
+                    {
+                        float retentionPerc = potentialShare + ( CurrentGame.CommunityRating / 100 );
+                        int newLikes = Mathf.RoundToInt( finalShare * retentionPerc );
+
+                        AddLikes( newLikes );
+                    }
 
                     bCanUpdateStreamStats = false;
                 }
@@ -262,11 +289,16 @@ public class GameManager : MonoBehaviour
 
                 if ( CurrentStreamTime >= TotalStreamTime )
                 {
+                    //Determine new followers
+                    float retentionPerc = 0.2f + ( ( SocialLevel + VerbalLevel + SkillLevel + HardwareLevel ) / 15 );
+                    retentionPerc += ( Likes / ( BestViewers != 0 ? BestViewers : 1 ) );
+
+                    float newFollowers = Likes * retentionPerc;
+                    AddFollowers( Mathf.RoundToInt( newFollowers ) );
+
                     ToggleLive( );
                 }
             }
-
-            Debug.Log( Viewers );
         }
     }
 
@@ -274,6 +306,7 @@ public class GameManager : MonoBehaviour
     {
         StartCash = Money;
         StartFollowers = Followers;
+        Likes = 0;
         CurrentStreamTime = 0;
         Viewers = 0;
         BestViewers = 0;
@@ -417,7 +450,7 @@ public class GameManager : MonoBehaviour
     {
         Followers += numOfNewFollowers;
 
-        if ( Followers % 50 == 0 )
+        if ( Followers % 10 == 0 )
         {
             GivePlayerSkillPoint( );
         }
@@ -444,6 +477,18 @@ public class GameManager : MonoBehaviour
     public void AddWatchers( int numOfNewWatchers )
     {
         Viewers += numOfNewWatchers;
+
+        if ( Viewers > BestViewers )
+        {
+            BestViewers = Viewers;
+        }
+
+        if ( Viewers > 0 && !bPlayerHasFirstWatcher )
+        {
+            bRealtimePaused = true;
+            ThrowGameMessage( "Viewers", "Noice! You've gained your first few viewers. As you raise your audience, you raise the likelihood that someone may actually want to follow you." );
+            bPlayerHasFirstWatcher = true;
+        }
 
         if ( OnViewersGained != null )
         {
@@ -486,6 +531,7 @@ public class GameManager : MonoBehaviour
 
     public void GivePlayerSkillPoint( )
     {
+        bRealtimePaused = true;
         ThrowGameMessage( "Skill Point", "Congradulations! You've unlocked a skill point! Use skill points to upgrade your streamer stats and become more socially interesting. You can view your stats in the window on the right side of the sceen." );
         SkillPoints++;
     }
@@ -502,11 +548,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            EndStream( );
-
             //Show post live window
             GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
             PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform, false );
+
+            EndStream( );
         }
 
         BtnShop.GetComponent<Button>( ).interactable = !IsLive;
