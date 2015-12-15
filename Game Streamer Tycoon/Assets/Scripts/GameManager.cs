@@ -267,6 +267,7 @@ public class GameManager : MonoBehaviour
 
                     //Add duplicate penalty
                     finalShare -= GameStreamHistory.Count( x => x.Title == CurrentGame.Title ) * 5;
+                    if ( Viewers + finalShare < 0 ) finalShare = 0; // limit
 
                     //Add watchers this update
                     AddWatchers( ( int )finalShare );
@@ -375,7 +376,7 @@ public class GameManager : MonoBehaviour
 
         while ( bShowingMessage ) yield return null;
 
-        ThrowGameMessage( "Getting Games", "Games must be purchased on the <color=#800080ff>Smoke Marketplace</color> before you can stream. Click the  button at the bottom-right corner of the screen to view the latest games on the market." );
+        ThrowGameMessage( "Getting Games", "Games must be purchased on the <color=#ff00ffff>Vapor Marketplace</color> before you can stream. Click the  button at the bottom-right corner of the screen to view the latest games on the market." );
         Marketplace.GetComponent<MarketplaceWindow>( ).RefreshGames( );
         BtnShop.SetActive( true );
 

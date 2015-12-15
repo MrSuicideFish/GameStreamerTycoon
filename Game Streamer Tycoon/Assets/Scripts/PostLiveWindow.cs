@@ -282,9 +282,11 @@ public class PostLiveWindow : MonoBehaviour
         //Determine comments
         CommentList = new string[ GameManager.Instance.BestViewers > 3 ? 3 : GameManager.Instance.BestViewers ];
 
+
         CommentA.text += GameToResolve.CommunityRating > 40 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSkill[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
         CommentB.text += GameToResolve.CriticRating > 60 ? PosSocial[ Random.Range( 0, 2 ) ] : NegCommunity[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
         CommentC.text += GameToResolve.StreamerRating> 30 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSocial[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
+
 
         //Give player cash
         float potentialEarnings = ( 2f * ( float )GameManager.Instance.Likes ) + ( 1.4f * ( float )GameManager.Instance.Viewers );
