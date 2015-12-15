@@ -22,7 +22,7 @@ public class GameHUD : MonoBehaviour
     void FixedUpdate( )
     {
         PlayerName.text = GameManager.Instance.StreamerName;
-        AmountOfCash.text = "$" + ( Mathf.Round( GameManager.Instance.Money * 100 ) / 100 ).ToString( );
+        AmountOfCash.text = "$" + ( Mathf.RoundToInt( GameManager.Instance.Money ) ).ToString( );
         NumOfFollowers.text = GameManager.Instance.Followers.ToString( );
 
         LiveButton.interactable = !GameManager.Instance.IsLive;

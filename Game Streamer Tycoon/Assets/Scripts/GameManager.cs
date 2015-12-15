@@ -321,7 +321,6 @@ public class GameManager : MonoBehaviour
 
         StartCash = 0;
         CurrentStreamTime = 0;
-        CurrentGame = default( Game );
         TimeForLastUpdate = 0;
     }
 
@@ -572,6 +571,8 @@ public class GameManager : MonoBehaviour
             //Show post live window
             GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
             PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform, false );
+
+            PostLiveWin.GetComponent<PostLiveWindow>( ).Init( );
 
             EndStream( );
         }

@@ -24,7 +24,7 @@ public class MarketplaceWindow : ModalWindow
     void FixedUpdate( )
     {
         BtnBuy.interactable = SelectedPanel != null && !SelectedPanel.GetComponent<GamePanel>().ParentGame.Owned;
-        PlayerCash.text = "$" + GameManager.Instance.Money.ToString( );
+        PlayerCash.text = "$" + ( ( int )( GameManager.Instance.Money ) ).ToString( );
 
         if ( GamePanels != null )
         {

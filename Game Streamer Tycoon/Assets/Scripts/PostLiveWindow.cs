@@ -271,26 +271,34 @@ public class PostLiveWindow : MonoBehaviour
 
     int MoneyEarned = 0;
 
-    void Start( )
+    public void Init( )
     {
         GameToResolve = GameManager.Instance.CurrentGame;
+
         GameNameTitle.text = GameManager.Instance.CurrentGame.Title;
         FollowersGained.text = "Followers Gained: " + ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers ).ToString( );
         TotalWatchers.text = "Total Watchers: " + GameManager.Instance.BestViewers.ToString( );
-        TotalDonations.text = "Total Donations: $" + ( GameManager.Instance.Money - GameManager.Instance.StartCash ).ToString( );
+
 
         //Determine comments
         CommentList = new string[ GameManager.Instance.BestViewers > 3 ? 3 : GameManager.Instance.BestViewers ];
 
+        CommentA.text = string.Format( "\"{0}\"", GameToResolve.CommunityRating > 30 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSkill[ Random.Range( 0, 2 ) ] );
+        CommentA.text += "-" + Usernames[ Random.Range( 0, Usernames.Length - 1 ) ];
 
-        CommentA.text += GameToResolve.CommunityRating > 40 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSkill[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
-        CommentB.text += GameToResolve.CriticRating > 60 ? PosSocial[ Random.Range( 0, 2 ) ] : NegCommunity[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
-        CommentC.text += GameToResolve.StreamerRating> 30 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSocial[ Random.Range( 0, 2 ) ] + '"' + "-" + Usernames[Random.Range(0, Usernames.Length - 1)];
+        CommentB.text = string.Format( "\"{0}\"", GameToResolve.CriticRating > 40 ? PosSocial[ Random.Range( 0, 2 ) ] : NegCommunity[ Random.Range( 0, 2 ) ] );
+        CommentB.text += "-" + Usernames[ Random.Range( 0, Usernames.Length - 1 ) ];
 
+
+        CommentC.text = string.Format( "\"{0}\"", GameToResolve.StreamerRating > 30 ? PosCommunity[ Random.Range( 0, 2 ) ] : NegSocial[ Random.Range( 0, 2 ) ] );
+        CommentC.text += "-" + Usernames[ Random.Range( 0, Usernames.Length - 1 ) ];
 
         //Give player cash
         float potentialEarnings = ( 2f * ( float )GameManager.Instance.Likes ) + ( 1.4f * ( float )GameManager.Instance.Viewers );
         potentialEarnings *= ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers );
+
+        TotalDonations.text = "Total Donations: $" + ( (int)potentialEarnings ).ToString( );
+
         GameManager.Instance.AddMoney( ( int )potentialEarnings );
 
         GoToStatistics( );
@@ -319,6 +327,7 @@ public class PostLiveWindow : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.CurrentGame = default( Game );
             GameObject.Destroy( gameObject );
         }
     }
