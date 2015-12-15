@@ -13,6 +13,11 @@ public class MarketplaceWindow : ModalWindow
     List<GameObject> GamePanels;
     GameObject SelectedPanel;
 
+    void Awake( )
+    {
+        NumGamesToDisplay = 10;
+    }
+
     public void Buy( )
     {
         if ( SelectedPanel != null )

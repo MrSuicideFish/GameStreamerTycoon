@@ -229,12 +229,7 @@ public class PostLiveWindow : MonoBehaviour
         "This streamer is sooo annoying."
     };
 
-    string[] PosSocial = 
-    {
-        "Hahaha! Great impressions!",
-        "Terrible game, but " + GameManager.Instance.StreamerName + " makes it hilarious!",
-        "I would love to see " + GameManager.Instance.StreamerName + " drop in on DewDeeGuy's channel!"
-    };
+    string[] PosSocial;
 
     string[] NegSkill = 
     {
@@ -243,12 +238,7 @@ public class PostLiveWindow : MonoBehaviour
         "Man, this is painful."
     };
 
-    string[] PosSkill = 
-    {
-        "Them skills!",
-        GameManager.Instance.StreamerName + " 4 MLG LOLZ",
-        "Turn off the hax bro"
-    };
+    string[] PosSkill;
 
     string[] PosCommunity =
     {
@@ -271,14 +261,27 @@ public class PostLiveWindow : MonoBehaviour
 
     int MoneyEarned = 0;
 
-    public void Init( )
+    public void Initialize( )
     {
+        PosSocial = new string[3] 
+        {
+            "Hahaha! Great impressions!",
+            "Terrible game, but " + GameManager.Instance.StreamerName + " makes it hilarious!",
+            "I would love to see " + GameManager.Instance.StreamerName + " drop in on DewDeeGuy's channel!"
+        };
+
+        PosSkill = new string[3]
+        {
+            "Them skills!",
+            GameManager.Instance.StreamerName + " 4 MLG LOLZ",
+            "Turn off the hax bro"
+        };
+
         GameToResolve = GameManager.Instance.CurrentGame;
 
         GameNameTitle.text = GameManager.Instance.CurrentGame.Title;
         FollowersGained.text = "Followers Gained: " + ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers ).ToString( );
         TotalWatchers.text = "Total Watchers: " + GameManager.Instance.BestViewers.ToString( );
-
 
         //Determine comments
         CommentList = new string[ GameManager.Instance.BestViewers > 3 ? 3 : GameManager.Instance.BestViewers ];
@@ -295,6 +298,7 @@ public class PostLiveWindow : MonoBehaviour
 
         //Give player cash
         float potentialEarnings = ( 2f * ( float )GameManager.Instance.Likes ) + ( 1.4f * ( float )GameManager.Instance.Viewers );
+        potentialEarnings /= 3;
         potentialEarnings *= ( GameManager.Instance.Followers - GameManager.Instance.StartFollowers );
 
         TotalDonations.text = "Total Donations: $" + ( (int)potentialEarnings ).ToString( );

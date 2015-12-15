@@ -572,7 +572,7 @@ public class GameManager : MonoBehaviour
             GameObject PostLiveWin = ( GameObject )GameObject.Instantiate( Resources.Load( "PostLiveWindow" ), Vector3.zero, Quaternion.identity );
             PostLiveWin.transform.SetParent( GameObject.FindGameObjectWithTag( "Canvas" ).transform, false );
 
-            PostLiveWin.GetComponent<PostLiveWindow>( ).Init( );
+            PostLiveWin.GetComponent<PostLiveWindow>( ).Initialize( );
 
             EndStream( );
         }
